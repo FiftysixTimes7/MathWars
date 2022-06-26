@@ -11,12 +11,25 @@ config_version=4
 [application]
 
 config/name="Math Wars"
+run/main_scene="res://StartScreen.tscn"
 config/icon="res://icon.png"
+
+[display]
+
+window/dpi/allow_hidpi=true
+
+[gui]
+
+theme/custom_font="res://Font.tres"
+
+[layer_names]
+
+2d_physics/layer_1="Numbers"
+2d_physics/layer_2="Reverse Functions"
+2d_physics/layer_3="Enemy Functions A"
+2d_physics/layer_4="Enemy Functions B"
+2d_physics/layer_5="Function Base"
 
 [physics]
 
 common/enable_pause_aware_picking=true
-
-[rendering]
-
-environment/default_environment="res://default_env.tres"

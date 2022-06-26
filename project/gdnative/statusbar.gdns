@@ -1,0 +1,9 @@
+[gd_resource type="NativeScript" load_steps=2 format=2]
+
+[ext_resource path="res://gdnative/math_wars.gdnlib" type="GDNativeLibrary" id=1]
+
+[resource]
+
+resource_name = "Statusbar"
+class_name = "Statusbar"
+library = ExtResource( 1 )

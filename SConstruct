@@ -61,7 +61,7 @@ elif platform == "windows":
         opts.Update(env)
 
         # These options are for a release build even using target=debug
-        env.Append(CCFLAGS=["-O3", "-std=c++14", "-Wwrite-strings"])
+        env.Append(CXXFLAGS=["-Ofast", "-Wwrite-strings"]) # Support C source files
         env.Append(
             LINKFLAGS=[
                 "--static",
@@ -94,7 +94,7 @@ if env["use_llvm"] == "yes":
 
 def add_sources(sources, dir):
     for f in os.listdir(dir):
-        if f.endswith(".cpp"):
+        if f.endswith(".cpp") or f.endswith(".c"): # Support C source files
             sources.append(dir + "/" + f)
 
 

@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://gdnative/reversefunctiongenerator.gdns" type="Script" id=1]
+
+[node name="ReverseFunctionGenerator" type="ColorRect"]
+margin_left = -15.0
+margin_top = -15.0
+margin_right = 15.0
+margin_bottom = 15.0
+color = Color( 1, 1, 0, 0.392157 )
+script = ExtResource( 1 )
+grade = null
+
+[node name="CoolDown" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+autostart = true
+
+[node name="Label" type="Label" parent="."]
+margin_left = -1.0
+margin_top = -1.0
+margin_right = 31.0
+margin_bottom = 31.0
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "g"
+align = 1

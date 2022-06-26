@@ -1,0 +1,30 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://gdnative/enemyfunctionb.gdns" type="Script" id=1]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 15.0
+
+[node name="EnemyFunctionB" type="Area2D" groups=["EnemyFunctions"]]
+collision_layer = 8
+collision_mask = 16
+script = ExtResource( 1 )
+
+[node name="EffectedArea" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Visibility" type="VisibilityNotifier2D" parent="."]
+rect = Rect2( -15, -15, 30, 30 )
+
+[node name="FunctionName" type="Label" parent="."]
+margin_left = -50.0
+margin_top = -16.0
+margin_right = 50.0
+margin_bottom = 16.0
+custom_colors/font_color = Color( 0.509804, 0, 0, 1 )
+text = "f"
+align = 1
+valign = 1
+
+[connection signal="area_entered" from="." to="." method="_on_EnemyFunctionA_area_entered"]
+[connection signal="screen_exited" from="Visibility" to="." method="_on_Visibility_screen_exited"]
