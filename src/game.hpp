@@ -39,6 +39,7 @@ public:
     void _on_SpawnA_timeout();
     void _on_SpawnB_timeout();
     void game_over();
+    void restart();
 
     static void _register_methods();
 };

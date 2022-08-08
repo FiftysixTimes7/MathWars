@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 32 )
 
-[node name="FunctionBase" type="Area2D" groups=["FunctionBases"]]
+[node name="FunctionBase" type="Area2D" groups=["FunctionBases", "NonStatic"]]
 collision_layer = 16
 collision_mask = 0
 script = ExtResource( 1 )

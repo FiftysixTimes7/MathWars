@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 15, 15 )
 
-[node name="Number" type="RigidBody2D"]
+[node name="Number" type="RigidBody2D" groups=["NonStatic"]]
 collision_mask = 0
 mode = 3
 contact_monitor = true

@@ -2,3 +2,4 @@
 
 extern int coins;
 extern int score;
+extern bool lose;

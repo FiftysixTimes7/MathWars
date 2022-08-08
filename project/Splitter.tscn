@@ -5,7 +5,7 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 15, 15 )
 
-[node name="Splitter" type="Area2D"]
+[node name="Splitter" type="Area2D" groups=["NonStatic"]]
 collision_layer = 0
 monitorable = false
 script = ExtResource( 1 )

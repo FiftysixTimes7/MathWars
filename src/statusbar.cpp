@@ -7,7 +7,7 @@ void Statusbar::_ready()
     status = get_node<godot::Label>("Status");
 
     connect("game_over", get_node<Game>("/root/Game"), "game_over");
-    connect("game_over", get_node<Sidebar>("/root/Game/Sidebar"), "game_over");
+    connect("game_over", get_node<Sidebar>("/root/Game/Sidebar"), "refresh");
 }
 
 void Statusbar::_process()
@@ -18,7 +18,7 @@ void Statusbar::_process()
     s += godot::String::num_int64(score);
 
     status->set_text(s);
-    if (coins < 0)
+    if (coins < 0 && !lose)
         emit_signal("game_over");
 }
 

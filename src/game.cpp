@@ -167,9 +167,24 @@ void Game::_on_SpawnB_timeout()
 
 void Game::game_over()
 {
+    lose = true;
     number_timer->stop();
     spawna_timer->stop();
     spawnb_timer->stop();
+}
+
+void Game::restart()
+{
+    coins = 5;
+    score = 0;
+    lose = false;
+    spawnb_started = false;
+    spawnb_label->set_text("");
+    godot::Array todel = get_tree()->get_nodes_in_group("NonStatic");
+    for (int i = 0; i < todel.size(); ++i)
+        ((godot::Node *)todel[i])->queue_free();
+    number_timer->start();
+    spawna_timer->start();
 }
 
 void Game::_register_methods()
@@ -180,4 +195,5 @@ void Game::_register_methods()
     godot::register_method("_on_SpawnA_timeout", &Game::_on_SpawnA_timeout);
     godot::register_method("_on_SpawnB_timeout", &Game::_on_SpawnB_timeout);
     godot::register_method("game_over", &Game::game_over);
+    godot::register_method("restart", &Game::restart);
 }

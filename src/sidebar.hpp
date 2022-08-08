@@ -33,7 +33,6 @@ class Sidebar : public godot::MarginContainer
     godot::Ref<godot::PackedScene> functionbase_scene;
     godot::Ref<godot::PackedScene> reversefunctiongenerator_scene;
     godot::Ref<godot::PackedScene> splitter_scene;
-    bool response = true;
 
 public:
     void _init();
@@ -50,6 +49,7 @@ public:
     void upgrade();
     void sell();
     void game_over();
+    void restart();
 
     static void _register_methods();
 };

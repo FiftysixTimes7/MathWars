@@ -18,7 +18,7 @@ void Sidebar::_ready()
 void Sidebar::_input(godot::Variant event)
 {
     godot::Ref<godot::InputEvent> e = event;
-    if (e->is_class("InputEventMouseButton") && e->is_pressed() && response)
+    if (e->is_class("InputEventMouseButton") && e->is_pressed())
     {
         godot::Vector2 pos = e->get("position");
         if (pos.x > godot::OS::get_singleton()->get_window_size().x + get_margin(0))
@@ -35,167 +35,178 @@ void Sidebar::refresh()
     for (int i = 0; i < items.size(); ++i)
         ((godot::Node *)items[i])->queue_free();
     items.clear();
-    switch (map->get_cell(focus.x, focus.y))
-    {
-    case 0:
-    {
-        if (!added_objects.has(focus))
+    if (!lose)
+        switch (map->get_cell(focus.x, focus.y))
         {
-            title->set_text("Regular Block");
-            CustomButton *b1 = CustomButton::_new();
-            b1->set_text("Add a Function Base");
-            b1->set("cost", 5);
-            b1->connect("pressed", this, "add_functionbase");
-            items.append(b1);
-            godot::Control *b2container = godot::Control::_new();
-            b2container->set_margin(2, 250);
-            b2container->set_margin(3, 53);
-            CustomButton *b2 = CustomButton::_new();
-            godot::Label *b2l = godot::Label::_new();
-            b2l->set_align(1);
-            b2l->set_valign(1);
-            b2l->set_margin(2, 250);
-            b2l->set_margin(3, 53);
-            b2l->set_text("Add a Reverse\nFunction Generator");
-            b2->add_child(b2l);
-            b2->set("cost", 10);
-            b2->connect("pressed", this, "add_reversefunctiongenerator");
-            b2->set_margin(2, 250);
-            b2->set_margin(3, 53);
-            b2container->add_child(b2);
-            items.append(b2container);
-        }
-        else if (((godot::Node *)added_objects[focus])->get_name().find("FunctionBase") != -1)
+        case 0:
         {
-            title->set_text("Function Base");
-            ((FunctionBase *)added_objects[focus])->set_range_visible(true);
-            godot::Label *func = godot::Label::_new();
-            func->set_align(1);
-            func->set_valign(1);
-            godot::String cur_expr = ((godot::Node *)added_objects[focus])->get("cur_expr");
-            func->set_text(cur_expr);
-            items.append(func);
-            godot::LineEdit *edit = godot::LineEdit::_new();
-            edit->set_placeholder(cur_expr);
-            edit->connect("text_changed", this, "calculate_function_cost");
-            items.append(edit);
-            CustomButton *b0 = CustomButton::_new();
-            b0->set_text("Set Function");
-            b0->connect("pressed", this, "set_function");
-            items.append(b0);
-            CustomButton *b1 = CustomButton::_new();
-            b1->set_text("Upgrade (+Range)");
-            int grade = ((godot::Node *)added_objects[focus])->get("grade");
-            b1->set("cost", round(pow(200, grade)));
-            b1->connect("pressed", this, "upgrade");
-            items.append(b1);
-            CustomButton *b2 = CustomButton::_new();
-            b2->set_text("Sell");
-            b2->set("cost", -(int)((godot::Node *)added_objects[focus])->call("get_value"));
-            b2->connect("pressed", this, "sell");
-            items.append(b2);
-        }
-        else if (((godot::Node *)added_objects[focus])->get_name().find("ReverseFunctionGenerator") != -1)
-        {
-            title->set_text("Reverse Function\nGenerator");
-            ReverseFunctionGenerator *d = added_objects[focus];
-            CustomButton *b1 = CustomButton::_new();
-            b1->set_text("Upgrade (-CoolDown)");
-            int grade = d->get("grade");
-            b1->set("cost", pow(10, grade));
-            b1->connect("pressed", this, "upgrade");
-            items.append(b1);
-            CustomButton *b2 = CustomButton::_new();
-            b2->set_text("Sell");
-            b2->set("cost", -(9 + (round(pow(10, grade)) - 1) / 9));
-            b2->connect("pressed", this, "sell");
-            items.append(b2);
-        }
-        break;
-    }
-    case 1:
-        title->set_text("Base");
-        break;
-    case 2:
-    {
-        if (focus.x == (int)map->spawnA[0] && focus.y == (int)map->spawnA[1])
-            title->set_text("Function Generator\n(Enemy A)\nTargeting\nNumbers");
-        else if (focus.x == (int)map->spawnB[0] && focus.y == (int)map->spawnB[1])
-            title->set_text("Function Generator\n(Enemy B)\nTargeting\nFunction Bases");
-        else
-            title->set_text("Number Source");
-        break;
-    }
-    case 3:
-        title->set_text("Blocked");
-        break;
-    case 5:
-    {
-        if (!added_objects.has(focus))
-        {
-            title->set_text("Regular Path");
-            CustomButton *b1 = CustomButton::_new();
-            b1->set_text("Add a Decreaser");
-            b1->set("cost", 1);
-            b1->connect("pressed", this, "add_decreaser");
-            items.append(b1);
-            CustomButton *b2 = CustomButton::_new();
-            b2->set_text("Add a Splitter");
-            b2->set("cost", 10);
-            b2->connect("pressed", this, "add_splitter");
-            items.append(b2);
-        }
-        else if (((godot::Node *)added_objects[focus])->get_name().find("Decreaser") != -1)
-        {
-            title->set_text("Decreaser");
-            Decreaser *d = added_objects[focus];
-            for (int i = 0; i < d->functions.size(); ++i)
+            if (!added_objects.has(focus))
             {
-                FunctionBase *f = d->functions[i];
+                title->set_text("Regular Block");
+                CustomButton *b1 = CustomButton::_new();
+                b1->set_text("Add a Function Base");
+                b1->set("cost", 5);
+                b1->connect("pressed", this, "add_functionbase");
+                items.append(b1);
+                godot::Control *b2container = godot::Control::_new();
+                b2container->set_margin(2, 250);
+                b2container->set_margin(3, 53);
+                CustomButton *b2 = CustomButton::_new();
+                godot::Label *b2l = godot::Label::_new();
+                b2l->set_align(1);
+                b2l->set_valign(1);
+                b2l->set_margin(2, 250);
+                b2l->set_margin(3, 53);
+                b2l->set_text("Add a Reverse\nFunction Generator");
+                b2->add_child(b2l);
+                b2->set("cost", 10);
+                b2->connect("pressed", this, "add_reversefunctiongenerator");
+                b2->set_margin(2, 250);
+                b2->set_margin(3, 53);
+                b2container->add_child(b2);
+                items.append(b2container);
+            }
+            else if (((godot::Node *)added_objects[focus])->get_name().find("FunctionBase") != -1)
+            {
+                title->set_text("Function Base");
+                ((FunctionBase *)added_objects[focus])->set_range_visible(true);
+                godot::Label *func = godot::Label::_new();
+                func->set_align(1);
+                func->set_valign(1);
+                godot::String cur_expr = ((godot::Node *)added_objects[focus])->get("cur_expr");
+                func->set_text(cur_expr);
+                items.append(func);
+                godot::LineEdit *edit = godot::LineEdit::_new();
+                edit->set_placeholder(cur_expr);
+                edit->connect("text_changed", this, "calculate_function_cost");
+                items.append(edit);
+                CustomButton *b0 = CustomButton::_new();
+                b0->set_text("Set Function");
+                b0->connect("pressed", this, "set_function");
+                items.append(b0);
+                CustomButton *b1 = CustomButton::_new();
+                b1->set_text("Upgrade (+Range)");
+                int grade = ((godot::Node *)added_objects[focus])->get("grade");
+                b1->set("cost", round(pow(200, grade)));
+                b1->connect("pressed", this, "upgrade");
+                items.append(b1);
+                CustomButton *b2 = CustomButton::_new();
+                b2->set_text("Sell");
+                b2->set("cost", -(int)((godot::Node *)added_objects[focus])->call("get_value"));
+                b2->connect("pressed", this, "sell");
+                items.append(b2);
+            }
+            else if (((godot::Node *)added_objects[focus])->get_name().find("ReverseFunctionGenerator") != -1)
+            {
+                title->set_text("Reverse Function\nGenerator");
+                ReverseFunctionGenerator *d = added_objects[focus];
+                CustomButton *b1 = CustomButton::_new();
+                b1->set_text("Upgrade (-CoolDown)");
+                int grade = d->get("grade");
+                b1->set("cost", pow(10, grade));
+                b1->connect("pressed", this, "upgrade");
+                items.append(b1);
+                CustomButton *b2 = CustomButton::_new();
+                b2->set_text("Sell");
+                b2->set("cost", -(9 + (round(pow(10, grade)) - 1) / 9));
+                b2->connect("pressed", this, "sell");
+                items.append(b2);
+            }
+            break;
+        }
+        case 1:
+            title->set_text("Base");
+            break;
+        case 2:
+        {
+            if (focus.x == (int)map->spawnA[0] && focus.y == (int)map->spawnA[1])
+                title->set_text("Function Generator\n(Enemy A)\nTargeting\nNumbers");
+            else if (focus.x == (int)map->spawnB[0] && focus.y == (int)map->spawnB[1])
+                title->set_text("Function Generator\n(Enemy B)\nTargeting\nFunction Bases");
+            else
+                title->set_text("Number Source");
+            break;
+        }
+        case 3:
+            title->set_text("Blocked");
+            break;
+        case 5:
+        {
+            if (!added_objects.has(focus))
+            {
+                title->set_text("Regular Path");
+                CustomButton *b1 = CustomButton::_new();
+                b1->set_text("Add a Decreaser");
+                b1->set("cost", 1);
+                b1->connect("pressed", this, "add_decreaser");
+                items.append(b1);
+                CustomButton *b2 = CustomButton::_new();
+                b2->set_text("Add a Splitter");
+                b2->set("cost", 10);
+                b2->connect("pressed", this, "add_splitter");
+                items.append(b2);
+            }
+            else if (((godot::Node *)added_objects[focus])->get_name().find("Decreaser") != -1)
+            {
+                title->set_text("Decreaser");
+                Decreaser *d = added_objects[focus];
+                for (int i = 0; i < d->functions.size(); ++i)
+                {
+                    FunctionBase *f = d->functions[i];
+                    godot::Label *l = godot::Label::_new();
+                    l->set_align(1);
+                    l->set_valign(1);
+                    l->set_text(f->cur_expr);
+                    items.append(l);
+                }
+                CustomButton *b1 = CustomButton::_new();
+                b1->set_text("Upgrade (+Amount)");
+                int grade = d->get("grade");
+                b1->set("cost", pow(2, grade));
+                b1->connect("pressed", this, "upgrade");
+                items.append(b1);
+                CustomButton *b2 = CustomButton::_new();
+                b2->set_text("Sell");
+                b2->set("cost", -(pow(2, grade) - 1));
+                b2->connect("pressed", this, "sell");
+                items.append(b2);
+            }
+            else if (((godot::Node *)added_objects[focus])->get_name().find("Splitter") != -1)
+            {
+                title->set_text("Splitter");
+                Splitter *d = added_objects[focus];
                 godot::Label *l = godot::Label::_new();
                 l->set_align(1);
                 l->set_valign(1);
-                l->set_text(f->cur_expr);
+                l->set_text("1:" + godot::String::num(d->get("proportion")));
                 items.append(l);
+                godot::HSlider *s = godot::HSlider::_new();
+                s->set_ticks(3);
+                s->set_min(-1);
+                s->set_max(1);
+                s->set_step(0.01);
+                s->connect("value_changed", this, "set_splitter_proportion");
+                items.append(s);
+                CustomButton *b = CustomButton::_new();
+                b->set_text("Sell");
+                b->set("cost", -10);
+                b->connect("pressed", this, "sell");
+                items.append(b);
             }
-            CustomButton *b1 = CustomButton::_new();
-            b1->set_text("Upgrade (+Amount)");
-            int grade = d->get("grade");
-            b1->set("cost", pow(2, grade));
-            b1->connect("pressed", this, "upgrade");
-            items.append(b1);
-            CustomButton *b2 = CustomButton::_new();
-            b2->set_text("Sell");
-            b2->set("cost", -(pow(2, grade) - 1));
-            b2->connect("pressed", this, "sell");
-            items.append(b2);
+            break;
         }
-        else if (((godot::Node *)added_objects[focus])->get_name().find("Splitter") != -1)
-        {
-            title->set_text("Splitter");
-            Splitter *d = added_objects[focus];
-            godot::Label *l = godot::Label::_new();
-            l->set_align(1);
-            l->set_valign(1);
-            l->set_text("1:" + godot::String::num(d->get("proportion")));
-            items.append(l);
-            godot::HSlider *s = godot::HSlider::_new();
-            s->set_ticks(3);
-            s->set_min(-1);
-            s->set_max(1);
-            s->set_step(0.01);
-            s->connect("value_changed", this, "set_splitter_proportion");
-            items.append(s);
-            CustomButton *b = CustomButton::_new();
-            b->set_text("Sell");
-            b->set("cost", -10);
-            b->connect("pressed", this, "sell");
-            items.append(b);
+        default:
+            title->set_text("Click on a block to\nshow its info");
         }
-        break;
-    }
-    default:
-        title->set_text("Click on a block to\nshow its info");
+    else
+    {
+        title->set_text("Game Over!");
+        added_objects.clear();
+        godot::Button *b = godot::Button::_new();
+        b->set_text("Restart");
+        b->connect("pressed", get_node("/root/Game"), "restart");
+        b->connect("pressed", this, "refresh");
+        items.append(b);
     }
     for (int i = 0; i < items.size(); ++i)
         infolist->add_child(items[i]);
@@ -280,15 +291,6 @@ void Sidebar::sell()
     refresh();
 }
 
-void Sidebar::game_over()
-{
-    title->set_text("Game Over!");
-    for (int i = 0; i < items.size(); ++i)
-        ((godot::Node *)items[i])->queue_free();
-    items.clear();
-    response = false;
-}
-
 void Sidebar::_register_methods()
 {
     godot::register_method("_ready", &Sidebar::_ready);
@@ -303,5 +305,4 @@ void Sidebar::_register_methods()
     godot::register_method("add_decreaser", &Sidebar::add_decreaser);
     godot::register_method("upgrade", &Sidebar::upgrade);
     godot::register_method("sell", &Sidebar::sell);
-    godot::register_method("game_over", &Sidebar::game_over);
 }

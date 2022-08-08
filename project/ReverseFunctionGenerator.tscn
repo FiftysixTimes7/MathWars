@@ -2,7 +2,7 @@
 
 [ext_resource path="res://gdnative/reversefunctiongenerator.gdns" type="Script" id=1]
 
-[node name="ReverseFunctionGenerator" type="ColorRect"]
+[node name="ReverseFunctionGenerator" type="ColorRect" groups=["NonStatic"]]
 margin_left = -15.0
 margin_top = -15.0
 margin_right = 15.0
