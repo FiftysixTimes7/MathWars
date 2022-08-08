@@ -263,6 +263,8 @@ void Sidebar::set_function()
     FunctionBase *base = added_objects[focus];
     godot::String cur_expr = base->get("cur_expr");
     godot::String text = ((godot::LineEdit *)items[1])->get_text();
+    if (text.empty())
+        return;
     coins -= evaluate(text.utf8().get_data()) - evaluate(cur_expr.utf8().get_data());
     base->set_function(text);
     refresh();
