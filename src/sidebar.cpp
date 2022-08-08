@@ -142,7 +142,8 @@ void Sidebar::refresh()
                 items.append(b1);
                 CustomButton *b2 = CustomButton::_new();
                 b2->set_text("Add a Splitter");
-                b2->set("cost", 10);
+                int grade = get_tree()->get_nodes_in_group("Splitters").size();
+                b2->set("cost", round(pow(5, grade + 1)));
                 b2->connect("pressed", this, "add_splitter");
                 items.append(b2);
             }
@@ -189,7 +190,8 @@ void Sidebar::refresh()
                 items.append(s);
                 CustomButton *b = CustomButton::_new();
                 b->set_text("Sell");
-                b->set("cost", -10);
+                int grade = get_tree()->get_nodes_in_group("Splitters").size();
+                b->set("cost", -round(pow(5, grade)));
                 b->connect("pressed", this, "sell");
                 items.append(b);
             }
@@ -218,7 +220,8 @@ void Sidebar::add_splitter()
     ((godot::Node2D *)l)->set_position(map->map_to_world(focus) + map->get_cell_size() / 2);
     map->add_child(l);
     added_objects[focus] = l;
-    coins -= 10;
+    int grade = get_tree()->get_nodes_in_group("Splitters").size();
+    coins -= pow(5, grade);
     refresh();
 }
 

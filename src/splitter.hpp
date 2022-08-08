@@ -7,6 +7,7 @@
 #include <ResourceLoader.hpp>
 #include <PathFollow2D.hpp>
 #include <Control.hpp>
+#include <SceneTree.hpp>
 
 #include "global.hpp"
 

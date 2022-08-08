@@ -44,7 +44,8 @@ void Splitter::_on_Splitter_body_exited(godot::Node2D *body)
 
 void Splitter::sell()
 {
-    coins += 10;
+    int grade = get_tree()->get_nodes_in_group("Splitters").size();
+    coins += round(pow(5, grade));
     queue_free();
 }
 
