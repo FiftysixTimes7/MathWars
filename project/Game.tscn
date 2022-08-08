@@ -35,7 +35,7 @@ margin_left = -270.0
 margin_top = -30.0
 custom_colors/font_color = Color( 1, 1, 1, 0.392157 )
 custom_fonts/font = SubResource( 1 )
-text = "MathWars - Version 0.1.0  "
+text = "MathWars - Version 0.1.1  "
 align = 2
 valign = 1
 

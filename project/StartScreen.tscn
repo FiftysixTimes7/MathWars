@@ -34,7 +34,7 @@ anchor_bottom = 1.0
 margin_left = -160.0
 margin_top = -32.0
 custom_colors/font_color = Color( 1, 1, 1, 0.392157 )
-text = "Version 0.1.0"
+text = "Version 0.1.1"
 align = 1
 valign = 1
 
