@@ -4,12 +4,10 @@ void Map::_init()
 {
     godot::Ref<godot::File> f = godot::File::_new();
     godot::Dictionary mapdata = {};
-    if (f->file_exists("res://map.json"))
-    {
-        f->open("res://map.json", godot::File::READ);
+    godot::Error ferror = f->open("res://map.json", godot::File::READ);
+    if (ferror == godot::Error::OK)
         mapdata = godot::JSON::get_singleton()->parse(f->get_as_text())->get_result();
-        f->close();
-    }
+    f->close();
     width = mapdata["width"];
     height = mapdata["height"];
     for (int i = 0; i < width + 2; ++i)
